@@ -4,17 +4,71 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="/" />
-    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
-    <link rel="stylesheet" href="app.css" />
+    <base href="/" /> 
+    <link rel="stylesheet" href="css/app.min.css" />
     <link rel="stylesheet" href="BlazorWithTailwindcss.styles.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <HeadOutlet />
+
+  <!--javascript section-->
+    <script>
+
+     if (localStorage.getItem('__blazortheme') === 'dark' || (!('__blazortheme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark')
+    }
+     
+        window.setTheme = (theme) => { 
+            if (localStorage.getItem('__blazortheme')) {
+                if (localStorage.getItem('__blazortheme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('__blazortheme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('__blazortheme', 'light');
+                }
+
+                // if NOT set  
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('__blazortheme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('__blazortheme', 'dark');
+                }
+            }
+            localStorage.setItem("__blazortheme", theme);
+            window.currentTheme = theme;
+        };
+
+ 
+        
+    </script>
 </head>
 
-<body>
+<body class="antialiased">
     <Routes />
     <script src="_framework/blazor.web.js"></script>
+<script>
+
+        
+        Blazor.addEventListener("enhancedload", (function () {
+             
+            if (localStorage.getItem('__blazortheme') === 'dark' || (!('__blazortheme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark')
+            }
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+            });
+
+        }));
+</script>
 </body>
 
 </html>
